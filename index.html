@@ -44,8 +44,9 @@
       if (current < max) {
         player1.src(sources[current]);
         player1.load();
-        player2.play();
       }
+      player2.play();
+
     });
 
     player2.on('ended', function () {
@@ -59,8 +60,9 @@
       if (current < max) {
         player2.src(sources[current]);
         player2.load();
-        player1.play();
       }
+      player1.play();
+
     });
   </script>
 </body>
