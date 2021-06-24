@@ -1,20 +1,51 @@
 <!DOCTYPE html>
 <html>
+​
 
 <head>
   <title>Videojs mux test</title>
+  ​
+  <style>
+    .container {
+      margin: auto;
+      width: 80%;
+      max-width: 640px;
+    }
+
+    #player1 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
+    }
+
+    #player2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 </head>
+​
 
 <body>
   <script src="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.css">
-
-
-  <video id="player1" class="video-js vjs-16-9" controls preload="auto" width="100%">
-  </video>
-  <video id="player2" class="video-js vjs-16-9" controls preload="auto" width="100%">
-  </video>
-
+  ​
+  ​<div class="container">
+    <video id="player1" class="video-js vjs-default-skin vjs-fluid" controls preload="auto" width="auto">
+    </video>
+  </div>
+  ​
+  <div class="container">
+    <video id="player2" class="video-js vjs-default-skin vjs-fluid" controls preload="auto" width="auto">
+    </video>
+  </div>
+  ​
   <script>
     const player1 = videojs('player1');
     const player2 = videojs('player2');
@@ -33,6 +64,8 @@
     current += 1;
     player2.src(sources[current]);
 
+    $("#player2").hide();
+
     player1.on('ended', function () {
       if (!player1.paused) {
         player1.pause();
@@ -45,6 +78,8 @@
         player1.src(sources[current]);
         player1.load();
       }
+
+      $("#player2").show();
       player2.play();
 
     });
@@ -61,10 +96,13 @@
         player2.src(sources[current]);
         player2.load();
       }
+
+      $("#player2").hide();
       player1.play();
 
     });
   </script>
 </body>
+​
 
 </html>
