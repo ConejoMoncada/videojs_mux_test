@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Videojs mux test</title>
-</head>
-<body>
-    <script src="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.css">  
-    
 
-  <video id="my-player" class="video-js vjs-16-9" controls preload="auto" width="100%">
+<head>
+  <title>Videojs mux test</title>
+</head>
+
+<body>
+  <script src="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@mux/videojs-kit@0.1/dist/index.css">
+
+
+  <video id="player1" class="video-js vjs-16-9" controls preload="auto" width="100%">
+  </video>
+  <video id="player2" class="video-js vjs-16-9" controls preload="auto" width="100%">
   </video>
 
   <script>
-  const player = videojs('my-player');
+    const player1 = videojs('player1');
+    const player2 = videojs('player2');
 
-  const sources = [
-    {src: '4H00Gz9bHz4K8b2R9foiRdM5ijJY4W3gcluZn1cSkKew', type: 'video/mux'},
-    {src: 'irmN8anSBX5VcFY6x01yN28UaTJA00e00P00h7V1upqILNU', type: 'video/mux'},
-    {src: '6fXAWXfY1GeHNtxk5CEp5Lsh6z00fEA2pADVTrZTVnJA', type: 'video/mux'},
-    {src: 'A1td5K2TkmgnJSYjvVkQxhqGKkm02Ue1i7I4IFyfQEnU', type: 'video/mux'},
-    {src: 'U6y7O028Xb2sVzeH5HyG7DcufX01rvTuALoo02x2yH5pV8', type: 'video/mux'}
-  ]
+    const sources = [
+      { src: '4H00Gz9bHz4K8b2R9foiRdM5ijJY4W3gcluZn1cSkKew', type: 'video/mux' },
+      { src: 'irmN8anSBX5VcFY6x01yN28UaTJA00e00P00h7V1upqILNU', type: 'video/mux' },
+      { src: '6fXAWXfY1GeHNtxk5CEp5Lsh6z00fEA2pADVTrZTVnJA', type: 'video/mux' },
+      { src: 'A1td5K2TkmgnJSYjvVkQxhqGKkm02Ue1i7I4IFyfQEnU', type: 'video/mux' },
+      { src: 'U6y7O028Xb2sVzeH5HyG7DcufX01rvTuALoo02x2yH5pV8', type: 'video/mux' }
+    ]
 
-  var current = 0
-  player.src(sources[current]);
+    var current = 0
+    const max = 4
+    player1.src(sources[current]);
+    current += 1;
+    player2.src(sources[current]);
 
-  player.on('ended', function() {
-    if (!player.paused) {
-        player.pause();
-     }
-    current += 1
-    player.src(sources[current]);
-    player.load();
-    player.play();
-  });
-  </script> 
+    player1.on('ended', function () {
+      if (!player1.paused) {
+        player1.pause();
+      }
+      if (!player2.paused) {
+        player2.pause();
+      }
+      current += 1
+      if (current < max) {
+        player1.src(sources[current]);
+        player1.load();
+        player2.play();
+      }
+    });
+
+    player2.on('ended', function () {
+      if (!player2.paused) {
+        player2.pause();
+      }
+      if (!player1.paused) {
+        player1.pause();
+      }
+      current += 1
+      if (current < max) {
+        player2.src(sources[current]);
+        player2.load();
+        player1.play();
+      }
+    });
+  </script>
 </body>
-</html> 
+
+</html>
